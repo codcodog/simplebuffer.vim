@@ -1,6 +1,18 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+function! s:BufMode(bnr)
+    let mod = ''
+
+    if getbufvar('%', 'nowbufnr') == a:bnr
+        let mod .= '%'
+    elseif bufnr('#') == a:bnr
+        let mod .= '#'
+    endif
+
+    return mod
+endfunction
+
 function! s:ListBuffers()
     setlocal modifiable
     silent! normal! gg"_dG
@@ -10,13 +22,18 @@ function! s:ListBuffers()
         let bnr = buf.bufnr
         let bname = bufname(bnr)
 
-        if flag
-            let flag=v:false
-            call setline(1, repeat(' ', 2).bnr.repeat(' ', 4).bname)
+        if buf.hidden
+            let bhid = s:BufMode(bnr) . 'h'
         else
-            call append(line('$'), repeat(' ', 2).bnr.repeat(' ', 4).bname)
+            let bhid= s:BufMode(bnr) . 'a'
         endif
 
+        if flag
+            let flag = v:false
+            call setline(1, repeat(' ', 2).bnr.repeat(' ', 4).bhid.repeat(' ', 4).bname)
+        else
+            call append(line('$'), repeat(' ', 2).bnr.repeat(' ', 4).bhid.repeat(' ', 4).bname)
+        endif
     endfor
 
     setlocal nomodifiable
@@ -25,6 +42,7 @@ endfunction
 function! simplebuffer#OpenSimpleBuffer()
     let prenr = winnr()
     let winnr = bufwinnr('^simplebuffer$')
+    let nowbuf = bufnr('%')
 
     if winnr < 0
         keepalt botright silent! 10new simplebuffer
@@ -37,6 +55,7 @@ function! simplebuffer#OpenSimpleBuffer()
         setlocal filetype=simplebuffer
         setlocal nomodifiable
 
+        call setbufvar('%', 'nowbufnr', nowbuf)
         call s:ListBuffers()
     else
         exe winnr . 'wincmd w'

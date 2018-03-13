@@ -1,6 +1,9 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+function! s:StrAdjust(str, width, direction)
+endfunction
+
 function! s:BufMode(bnr)
     let mod = ''
 
@@ -25,7 +28,11 @@ function! s:ListBuffers()
         if buf.hidden
             let bhid = s:BufMode(bnr) . 'h'
         else
-            let bhid= s:BufMode(bnr) . 'a'
+            let bhid = s:BufMode(bnr) . 'a'
+        endif
+
+        if getbufvar(bnr, '&modified')
+            let bhid  .= ' +'
         endif
 
         if flag

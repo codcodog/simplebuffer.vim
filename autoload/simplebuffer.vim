@@ -2,12 +2,27 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! s:ListBuffers()
-    call setline(1, 'hello world.')
-    call setline(2, 'hello world.')
-    call setline(3, 'hello world.')
+    setlocal modifiable
+    silent! normal! gg"_dG
+
+    let flag = v:true
+    for buf in getbufinfo({'buflisted': 1})
+        let bnr = buf.bufnr
+        let bname = bufname(bnr)
+
+        if flag
+            let flag=v:false
+            call setline(1, repeat(' ', 2).bnr.repeat(' ', 4).bname)
+        else
+            call append(line('$'), repeat(' ', 2).bnr.repeat(' ', 4).bname)
+        endif
+
+    endfor
+
+    setlocal nomodifiable
 endfunction
 
-function! simplebuffer#OpenSimpleBuffer(bang)
+function! simplebuffer#OpenSimpleBuffer()
     let prenr = winnr()
     let winnr = bufwinnr('^simplebuffer$')
 
@@ -15,10 +30,12 @@ function! simplebuffer#OpenSimpleBuffer(bang)
         keepalt botright silent! 10new simplebuffer
 
         setlocal hidden
+        setlocal buftype=nofile
         setlocal nobuflisted
         setlocal nonumber
         setlocal cursorline
         setlocal filetype=simplebuffer
+        setlocal nomodifiable
 
         call s:ListBuffers()
     else
@@ -26,7 +43,7 @@ function! simplebuffer#OpenSimpleBuffer(bang)
     endif
 endfunction
 
-function! simplebuffer#CloseSimpleBuffer(bang)
+function! simplebuffer#CloseSimpleBuffer()
     echo 'close'
 endfunction
 

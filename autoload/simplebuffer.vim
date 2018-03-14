@@ -73,6 +73,13 @@ endfunction
 
 function! s:DelBuf()
     let bufnr = s:SelectBuf()
+
+    if winnr('$') == 2 && bufwinnr(bufnr) == 1
+        exe '1wincmd w'
+        exe 'silent! bn'
+        exe '2wincmd w'
+    endif
+
     exe "bdelete ".bufnr
 
     if empty(getbufinfo({'buflisted': 1}))
@@ -84,6 +91,13 @@ endfunction
 
 function! s:WipeBuf()
     let bufnr = s:SelectBuf()
+
+    if winnr('$') == 2 && bufwinnr(bufnr) == 1
+        exe '1wincmd w'
+        exe 'silent! bn'
+        exe '2wincmd w'
+    endif
+
     exe "bwipeout ".bufnr
 
     if empty(getbufinfo({'buflisted': 1}))

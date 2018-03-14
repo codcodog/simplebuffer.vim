@@ -74,13 +74,23 @@ endfunction
 function! s:DelBuf()
     let bufnr = s:SelectBuf()
     exe "bdelete ".bufnr
-    call s:ListBuffers()
+
+    if empty(getbufinfo({'buflisted': 1}))
+        quit
+    else
+        call s:ListBuffers()
+    endif
 endfunction
 
 function! s:WipeBuf()
     let bufnr = s:SelectBuf()
     exe "bwipeout ".bufnr
-    call s:ListBuffers()
+
+    if empty(getbufinfo({'buflisted': 1}))
+        quit
+    else
+        call s:ListBuffers()
+    endif
 endfunction
 
 function! s:MapKeys()

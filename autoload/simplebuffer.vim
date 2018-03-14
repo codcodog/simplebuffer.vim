@@ -71,21 +71,16 @@ function! s:SelectBuf()
     return bufnr
 endfunction
 
-function! s:Refresh()
-    silent! normal! gg"_dG
-    call s:ListBuffers()
-endfunction
-
 function! s:DelBuf()
     let bufnr = s:SelectBuf()
     exe "bdelete ".bufnr
-    call s:Refresh()
+    call s:ListBuffers()
 endfunction
 
 function! s:WipeBuf()
     let bufnr = s:SelectBuf()
     exe "bwipeout ".bufnr
-    call s:Refresh()
+    call s:ListBuffers()
 endfunction
 
 function! s:MapKeys()

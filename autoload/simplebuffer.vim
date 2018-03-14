@@ -2,6 +2,22 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! s:StrAdjust(str, width, direction)
+    let astr = ''
+    if strlen(a:str) >= a:width
+        let astr .= a:str
+    else
+        let diff = a:width - strlen(a:str)
+        if a:direction ==# 'right'
+            let astr .= repeat(' ', diff).a:str
+        elseif a:direction ==# 'left'
+            let astr .= a:str.repeat(' ', diff)
+        else
+            let diff = float2nr(diff)
+            let astr .= repeat(' ', diff).a:str.repeat(' ', diff)
+        endif
+    endif
+
+    return astr
 endfunction
 
 function! s:BufMode(bnr)
@@ -32,14 +48,16 @@ function! s:ListBuffers()
         endif
 
         if getbufvar(bnr, '&modified')
-            let bhid  .= ' +'
+            let bmod  = ' +'
+        else
+            let bmod = '  '
         endif
 
         if flag
             let flag = v:false
-            call setline(1, repeat(' ', 2).bnr.repeat(' ', 4).bhid.repeat(' ', 4).bname)
+            call setline(1, s:StrAdjust(bnr, 3, 'right').s:StrAdjust(bhid, 6, 'right').bmod.repeat(' ', 3).bname)
         else
-            call append(line('$'), repeat(' ', 2).bnr.repeat(' ', 4).bhid.repeat(' ', 4).bname)
+            call append(line('$'), s:StrAdjust(bnr, 3, 'right').s:StrAdjust(bhid, 6, 'right').bmod.repeat(' ', 3).bname)
         endif
     endfor
 
@@ -47,7 +65,6 @@ function! s:ListBuffers()
 endfunction
 
 function! simplebuffer#OpenSimpleBuffer()
-    let prenr = winnr()
     let winnr = bufwinnr('^simplebuffer$')
     let nowbuf = bufnr('%')
 

@@ -77,7 +77,11 @@ function! s:DelBuf()
     if winnr('$') == 2 && bufwinnr(bufnr) == 1
         exe '1wincmd w'
         exe 'silent! bn'
+
+        let nowbufnr = winbufnr(1)
+
         exe '2wincmd w'
+        call setbufvar('%', 'nowbufnr', nowbufnr)
     endif
 
     exe "bdelete ".bufnr
@@ -95,7 +99,11 @@ function! s:WipeBuf()
     if winnr('$') == 2 && bufwinnr(bufnr) == 1
         exe '1wincmd w'
         exe 'silent! bn'
+
+        let nowbufnr = winbufnr(1)
+
         exe '2wincmd w'
+        call setbufvar('%', 'nowbufnr', nowbufnr)
     endif
 
     exe "bwipeout ".bufnr

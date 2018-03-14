@@ -64,6 +64,39 @@ function! s:ListBuffers()
     setlocal nomodifiable
 endfunction
 
+function! s:SelectBuf()
+    let content = getline(line('.'))
+    let bufnr = str2nr(strpart(content, 0, 3))
+
+    return bufnr
+endfunction
+
+function! s:Refresh()
+    silent! normal! gg"_dG
+    call s:ListBuffers()
+endfunction
+
+function! s:DelBuf()
+    let bufnr = s:SelectBuf()
+    exe "bdelete ".bufnr
+    call s:Refresh()
+endfunction
+
+function! s:WipeBuf()
+    let bufnr = s:SelectBuf()
+    exe "bwipeout ".bufnr
+    call s:Refresh()
+endfunction
+
+function! s:MapKeys()
+    noremap <silent> <buffer> <C-v> <nop>
+    noremap <silent> <buffer> <C-x> <nop>
+    noremap <silent> <buffer> d :call <SID>DelBuf()<CR>
+    noremap <silent> <buffer> D :call <SID>WipeBuf()<CR>
+    noremap <silent> <buffer> <Enter> <nop>
+    noremap <silent> <buffer> <ESC> <nop>
+endfunction
+
 function! simplebuffer#OpenSimpleBuffer()
     let winnr = bufwinnr('^simplebuffer$')
     let nowbuf = bufnr('%')
@@ -81,6 +114,7 @@ function! simplebuffer#OpenSimpleBuffer()
 
         call setbufvar('%', 'nowbufnr', nowbuf)
         call s:ListBuffers()
+        call s:MapKeys()
     else
         exe winnr . 'wincmd w'
     endif

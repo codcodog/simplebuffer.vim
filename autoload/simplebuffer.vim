@@ -73,6 +73,7 @@ endfunction
 
 function! s:DelBuf()
     let bufnr = s:SelectBuf()
+    let prebufnr = getbufvar('%', 'nowbufnr')
 
     if winnr('$') == 2 && bufwinnr(bufnr) == 1
         exe '1wincmd w'
@@ -83,8 +84,19 @@ function! s:DelBuf()
         exe '2wincmd w'
         call setbufvar('%', 'nowbufnr', nowbufnr)
     endif
-
+    
     exe "bdelete ".bufnr
+
+    if bufnr == prebufnr
+        let lastwinnr = winnr('$')
+
+        if lastwinnr == 2
+            call setbufvar('%', 'prewinnr', 1)
+        else
+            let nowwinnr = lastwinnr - 1
+            call setbufvar('%', 'prewinnr', nowwinnr)
+       endif
+    endif
 
     if empty(getbufinfo({'buflisted': 1}))
         quit
@@ -115,21 +127,58 @@ function! s:WipeBuf()
     endif
 endfunction
 
+function! s:EnterBuf()
+    let bufnr = s:SelectBuf()
+    let prewinnr = getbufvar('%', 'prewinnr')
+
+    quit
+    exe prewinnr.'wincmd w'
+    exe 'silent! buffer'.bufnr
+endfunction
+
+function! s:CloseBuf()
+    let prewinnr = getbufvar('%', 'prewinnr')
+    let winnr = bufwinnr('^simplebuffer$')
+
+    if winnr > 0
+        quit
+    endif
+
+    exe 'silent! '.prewinnr.'wincmd w'
+endfunction
+
+function! s:OpenBuf(direction)
+    let bufnr = s:SelectBuf()
+    let prewinnr = getbufvar('%', 'prewinnr')
+
+    if a:direction ==# 'horizon'
+        quit
+        exe prewinnr.'wincmd w'
+        exe 'silent! belowright sb '.bufnr
+    elseif a:direction ==# 'vertical'
+        quit
+        exe prewinnr.'wincmd w'
+        exe 'silent! vertical belowright sb '.bufnr
+    endif
+endfunction
+
 function! s:MapKeys()
-    noremap <silent> <buffer> <C-v> <nop>
-    noremap <silent> <buffer> <C-x> <nop>
+    noremap <silent> <buffer> <C-v> :call <SID>OpenBuf('vertical')<CR>
+    noremap <silent> <buffer> <C-x> :call <SID>OpenBuf('horizon')<CR>
     noremap <silent> <buffer> d :call <SID>DelBuf()<CR>
     noremap <silent> <buffer> D :call <SID>WipeBuf()<CR>
-    noremap <silent> <buffer> <Enter> <nop>
-    noremap <silent> <buffer> <ESC> <nop>
+    noremap <silent> <buffer> <Enter> :call <SID>EnterBuf()<CR>
+    noremap <silent> <buffer> <ESC> :call <SID>CloseBuf()<CR>
+    noremap <silent> <buffer> q :call <SID>CloseBuf()<CR>
 endfunction
 
 function! simplebuffer#OpenSimpleBuffer()
     let winnr = bufwinnr('^simplebuffer$')
     let nowbuf = bufnr('%')
+    let prewinnr = winnr()
 
     if winnr < 0
-        keepalt botright silent! 10new simplebuffer
+        exe "keepalt botright silent! ".g:simple_botright_height."new simplebuffer"
 
         setlocal hidden
         setlocal buftype=nofile
@@ -140,6 +189,7 @@ function! simplebuffer#OpenSimpleBuffer()
         setlocal nomodifiable
 
         call setbufvar('%', 'nowbufnr', nowbuf)
+        call setbufvar('%', 'prewinnr', prewinnr)
         call s:ListBuffers()
         call s:MapKeys()
     else
@@ -147,8 +197,18 @@ function! simplebuffer#OpenSimpleBuffer()
     endif
 endfunction
 
+function! simplebuffer#ToggleSimpleBuffer()
+    let winnr = bufwinnr('^simplebuffer$')
+
+    if winnr < 0
+        call simplebuffer#OpenSimpleBuffer()
+    else
+        call simplebuffer#CloseSimpleBuffer()
+    endif
+endfunction
+
 function! simplebuffer#CloseSimpleBuffer()
-    echo 'close'
+    call s:CloseBuf()
 endfunction
 
 let &cpo = s:save_cpo

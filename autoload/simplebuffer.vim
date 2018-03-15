@@ -76,6 +76,8 @@ function! s:DelBuf()
     let prebufnr = getbufvar('%', 'nowbufnr')
     let nowwinnr = getbufvar('%', 'nowwinnr')
 
+    exe "bdelete ".bufnr
+
     " 仅有两个窗口（包括simplebuffer窗口）
     if winnr('$') == 2 && bufwinnr(bufnr) == 1
         exe '1wincmd w'
@@ -86,8 +88,15 @@ function! s:DelBuf()
         exe '2wincmd w'
         call setbufvar('%', 'nowbufnr', nowbufnr)
     endif
-    
-    exe "bdelete ".bufnr
+
+    " 仅有一个窗口（simplebuffer窗口）
+    if winnr('$') == 1
+        exe 'silent! sbn'
+        let nowbufnr = winbufnr(1)
+
+        exe '2wincmd w'
+        call setbufvar('%', 'nowbufnr', nowbufnr)
+    endif
 
     " 如果当前window的buffer不存在了，则更新当前window number
     let nowwinbuf = winbufnr(nowwinnr)
@@ -121,6 +130,8 @@ function! s:WipeBuf()
     let prebufnr = getbufvar('%', 'nowbufnr')
     let nowwinnr = getbufvar('%', 'nowwinnr')
 
+    exe "bwipeout ".bufnr
+
     if winnr('$') == 2 && bufwinnr(bufnr) == 1
         exe '1wincmd w'
         exe 'silent! bn'
@@ -131,7 +142,14 @@ function! s:WipeBuf()
         call setbufvar('%', 'nowbufnr', nowbufnr)
     endif
 
-    exe "bwipeout ".bufnr
+    " 仅有一个窗口（simplebuffer窗口）
+    if winnr('$') == 1
+        exe 'silent! sbn'
+        let nowbufnr = winbufnr(1)
+
+        exe '2wincmd w'
+        call setbufvar('%', 'nowbufnr', nowbufnr)
+    endif
 
     " 如果当前window的buffer不存在了，则更新当前window number
     let nowwinbuf = winbufnr(nowwinnr)

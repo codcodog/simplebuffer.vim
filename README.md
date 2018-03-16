@@ -27,4 +27,4 @@ Plug 'codcodog/simplebuffer.vim'
 |`q`, ``<ESC>``|关闭 `buffer` 管理|
 
 #### License
-MIT
+Vim License

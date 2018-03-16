@@ -1,0 +1,84 @@
+simplebuffer.vim for Vim version 7.0+ Last change: 15 March, 2018
+
+Maintainer: Codcodog <codcodog@gmail.com>
+Version: 1.0.0
+Description: simplebuffer.vim is a very simple buffer manager
+for switching and deleting buffers.
+Last Change: 15 March, 2018
+License: Vim License (see :help license)
+Website: https://github.com/codcodog/simplebuffer.vim
+
+Help on using simplebuffer.vim                           *simplebuffer.vim*  
+
+1. Introduction                         |simplebuffer.vim-introduction|
+2. Usage                                |simplebuffer.vim-usage|
+3. Mapping                              |simplebuffer.vim-mapping|
+
+==============================================================================
+ 1. INTRODUCTION                               *simplebuffer.vim-introduction*
+
+simplebuffer.vim - is a very simple buffer manager, which for switching 
+and deleting buffers quickly.
+
+Platform:
+    *nix platforms.
+    If you are on windows platform, there might be some weird bugs.
+
+==============================================================================
+ 2. USAGE                                      *simplebuffer.vim-usage*
+
+                                               *g:simple_botright_height*
+g:simple_botright_height    (Default: 10)
+    Buffer manager window height.
+
+                                               *SimpleBuffer*
+:SimpleBuffer
+    Opening a window which is buffer manager, for switching and deleting
+buffers by |Mapping| keys.
+    And the buffer manager window lists buffers like vim command `:ls`, for
+example:
+    <Bufnr>    <Mode>    <BufName>
+       1        %a +       buf1
+       2        #a         buf2
+       3        h          buf3
+
+                                               *SimpleBufferClose*
+:SimpleBufferClose
+    Closing buffer manager window.
+                                               *SimpleBufferToggle*
+:SimpleBufferToggle
+    If the buffer manager window is closed, then open it, otherwise, close
+it.
+
+==============================================================================
+ 3. MAPPING                                    *simplebuffer.vim-mapping*
+                    
+                                               *<C-v>*
+<C-v>
+    Open the selected buffer vertically.
+
+                                               *<C-x>*
+<C-x>
+    Open the selected buffer horizontally.
+
+                                               *d*
+d~
+    Delete the selected buffer, just like `:bd buffer`
+
+                                               *D*
+D~
+    Wipeout the selected buffer, just like `:bw buffer` 
+
+                                              *<Enter>*
+<Enter>
+    Open the selected buffer on the current window.
+
+                                              *q*
+q~
+    Close the buffer manager window.
+
+                                              *<ESC>*
+<ESC>
+    Close the buffer manager window.
+
+ vim:tw=78:ts=4:ft=help:norl:

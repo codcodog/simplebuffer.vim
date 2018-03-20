@@ -1,30 +1,30 @@
 Simple Buffer
 =============
 
-简单易用的 `buffer` 管理插件.
+[Simple Buffer](https://github.com/codcodog/simplebuffer.vim) is a plugin for switching and deleting buffers easily.
 
-#### 安装
-使用 [vim-plug](https://github.com/junegunn/vim-plug) 进行安装
+#### Installation
+Using [vim-plug](https://github.com/junegunn/vim-plug)
 ```
 Plug 'codcodog/simplebuffer.vim'
 ```
 
-#### 命令
-`SimpleBuffer`：打开 `buffer` 管理.
+#### Commands
+`:SimpleBuffer` - open the `buffer` manager.
 
-`SimpleBufferClose`：关闭 `buffer` 管理.
+`:SimpleBufferClose` - close the `buffer` manager.
 
-`SimpleBufferToggle`：如果 `buffer` 管理没打开则打开它，若已经打开则关闭它.
+`:SimpleBufferToggle` - toggle to open/close the `buffer` manager.
 
-#### Mapping
-| 映射 | 描述 |
+#### Keybindings
+| Key | Description |
 |:----:|:----:|
-|``<C-v>``|垂直打开选中 `buffer`|
-|``<C-x>``|水平打开选中 `buffer`|
-|`d`|删除选中 `buffer`，相当于 `bdelete`|
-|`D`|移除选中 `buffer`，相当于 `bwipeout`|
-|`<Enter>`|回车，直接在当前窗口打开选中 `buffer`|
-|`q`, ``<ESC>``|关闭 `buffer` 管理|
+|``<C-v>``|open the selected `buffer` vertically|
+|``<C-x>``|open the selected `buffer` horizontally|
+|`d`|delete the selected `buffer`, which means to `bdelete`|
+|`D`|wipeout the selected `buffer`, which means to `bwipeout`|
+|`<Enter>`|open the selected `buffer` on current window|
+|`q`, ``<ESC>``|close the `buffer` manager|
 
 #### License
 Vim License

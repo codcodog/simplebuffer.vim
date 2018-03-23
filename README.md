@@ -22,14 +22,15 @@ Plugin 'codcodog/simplebuffer.vim'
 `:SimpleBufferToggle` - toggle to open/close the `buffer` manager.
 
 #### Keybindings
-| Key | Description |
-|:----:|:----:|
-|``<C-v>``|open the selected `buffer` vertically|
-|``<C-x>``|open the selected `buffer` horizontally|
-|`d`|delete the selected `buffer`, which means to `bdelete`|
-|`D`|wipeout the selected `buffer`, which means to `bwipeout`|
-|`<Enter>`|open the selected `buffer` on current window|
-|`q`, ``<ESC>``|close the `buffer` manager|
+| Key            | Description                                              |
+| :----:         | :----:                                                   |
+| `j`, `k`       | select `buffer`                                          |
+| ``<C-v>``      | open the selected `buffer` vertically                    |
+| ``<C-x>``      | open the selected `buffer` horizontally                  |
+| `d`            | delete the selected `buffer`, which means to `bdelete`   |
+| `D`            | wipeout the selected `buffer`, which means to `bwipeout` |
+| `<Enter>`      | open the selected `buffer` on current window             |
+| `q`, ``<ESC>`` | close the `buffer` manager                               |
 
 #### License
 Vim License

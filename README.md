@@ -9,6 +9,11 @@ Using [vim-plug](https://github.com/junegunn/vim-plug)
 Plug 'codcodog/simplebuffer.vim'
 ```
 
+Using [Vundle](https://github.com/VundleVim/Vundle.vim)
+```
+Plugin 'codcodog/simplebuffer.vim'
+```
+
 #### Commands
 `:SimpleBuffer` - open the `buffer` manager.
 
